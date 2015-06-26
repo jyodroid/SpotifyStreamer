@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SpotifyStreamer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Search-->
+    <string name="search_title" translateable="false">Spotify Streamer</string>
+    <string name="default_artist" translatable = "false">Sting</string>
+∫
+</resources>
