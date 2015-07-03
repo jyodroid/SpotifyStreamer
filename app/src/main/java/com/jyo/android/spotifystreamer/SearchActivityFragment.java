@@ -3,6 +3,7 @@ package com.jyo.android.spotifystreamer;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,6 +33,11 @@ public class SearchActivityFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -43,23 +49,26 @@ public class SearchActivityFragment extends Fragment {
         searchAdapter = new SearchAdapter(context, new ArrayList<Artist>());
 
         listView.setAdapter(searchAdapter);
+
         final EditText editText = (EditText) rootView.findViewById(R.id.txt_artist_name);
+        artistName = editText.getText().toString();
+
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE ||
-                        actionId == EditorInfo.IME_ACTION_GO ||
-                event.getAction() == KeyEvent.ACTION_DOWN &&
-                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+                        (event.getAction() == KeyEvent.ACTION_DOWN &&
+                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER)){
                     if(null != v.getText()  && 0 != v.getText().length()){
-                        updateArtist(v.getText().toString());
+                        artistName = v.getText().toString();
+                        updateArtist(artistName, context);
                     }
                 }
                 return false;
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -74,9 +83,16 @@ public class SearchActivityFragment extends Fragment {
         return rootView;
     }
 
-    private void updateArtist(String artistName){
-        this.artistName = artistName;
-        SearchArtistTask fetchArtistTask = new SearchArtistTask(searchAdapter);
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(artistName.length() > 0){
+            updateArtist(artistName, getActivity());
+        }
+    }
+
+    private void updateArtist(String artistName, Context context){
+        SearchArtistTask fetchArtistTask = new SearchArtistTask(searchAdapter, context);
         fetchArtistTask.execute(artistName);
     }
 }

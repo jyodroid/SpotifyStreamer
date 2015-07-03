@@ -1,7 +1,9 @@
 package com.jyo.android.spotifystreamer;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -14,9 +16,12 @@ public class SearchArtistTask extends AsyncTask<String, Void, ArtistsPager> {
 
     private final String LOG_TAG = SearchAdapter.class.getCanonicalName();
     private SearchAdapter searchAdapter;
+    private Context context;
 
-    public SearchArtistTask(SearchAdapter searchAdapter) {
+    public SearchArtistTask(SearchAdapter searchAdapter, Context context) {
+
         this.searchAdapter = searchAdapter;
+        this.context = context;
     }
 
     @Override
@@ -40,6 +45,15 @@ public class SearchArtistTask extends AsyncTask<String, Void, ArtistsPager> {
     protected void onPostExecute(ArtistsPager result) {
         //Obtaining artists
         searchAdapter.clear();
-        searchAdapter.addAll(result.artists.items);
+
+        if(0 == result.artists.items.size()){
+            CharSequence text = "No Artist found. Please type another one";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }else{
+            searchAdapter.addAll(result.artists.items);
+        }
     }
 }
