@@ -2,6 +2,7 @@ package com.jyo.android.spotifystreamer;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class SearchActivityFragment extends Fragment {
 
     private static final String LOG_TAG = SearchActivity.class.getSimpleName();
     private SearchAdapter searchAdapter;
+    private String artistName;
 
     public SearchActivityFragment() {
     }
@@ -33,7 +35,7 @@ public class SearchActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Context context = getActivity().getBaseContext();
+        final Context context = getActivity().getBaseContext();
 
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listview_search);
@@ -42,8 +44,6 @@ public class SearchActivityFragment extends Fragment {
 
         listView.setAdapter(searchAdapter);
         final EditText editText = (EditText) rootView.findViewById(R.id.txt_artist_name);
-        updateArtist(editText.getText().toString());
-
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -51,7 +51,9 @@ public class SearchActivityFragment extends Fragment {
                         actionId == EditorInfo.IME_ACTION_GO ||
                 event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-                    updateArtist(v.getText().toString());
+                    if(null != v.getText()  && 0 != v.getText().length()){
+                        updateArtist(v.getText().toString());
+                    }
                 }
                 return false;
             }
@@ -60,23 +62,20 @@ public class SearchActivityFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Context context = getActivity().getBaseContext();
-//                //Text to be show
-//                CharSequence text = adapter.getItem(position);
-//                int duration = Toast.LENGTH_LONG;
-//
-//                Toast toast = Toast.makeText(context,text,duration);
-//                toast.show();
-//
-//                Intent detailActivityIntent = new Intent(context, DetailActivity.class);
-//                detailActivityIntent.putExtra(Intent.EXTRA_TEXT,text);
-//                startActivity(detailActivityIntent);
+
+                String selectedArtistName = searchAdapter.getItem(position).name;
+                String selectedArtistId = searchAdapter.getItem(position).id;
+                Intent topTenActivityIntent = new Intent(context, TopTenActivity.class);
+                topTenActivityIntent.putExtra(getString(R.string.selected_artist_name), selectedArtistName);
+                topTenActivityIntent.putExtra(getString(R.string.selected_artist_id), selectedArtistId);
+                startActivity(topTenActivityIntent);
             }
         });
         return rootView;
     }
 
     private void updateArtist(String artistName){
+        this.artistName = artistName;
         SearchArtistTask fetchArtistTask = new SearchArtistTask(searchAdapter);
         fetchArtistTask.execute(artistName);
     }

@@ -5,6 +5,11 @@
 
     <!-- Search-->
     <string name="search_title" translateable="false">Spotify Streamer</string>
-    <string name="default_artist" translatable = "false">Sting</string>
+    <string name="title_activity_top_ten">Top 10 Tracks</string>
+    <string name="search_tip">Artist name</string>
+
+    <!-- Intent Strings -->
+    <string name="selected_artist_name">"selectedArtistName"</string>
+    <string name="selected_artist_id">"selectedArtistId"</string>
 ∫
 </resources>

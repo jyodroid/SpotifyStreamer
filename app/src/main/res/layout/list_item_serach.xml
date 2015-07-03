@@ -5,14 +5,14 @@
     android:weightSum="1">
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="115dp"
+        android:layout_width="82dp"
+        android:layout_height="100dp"
         android:id="@+id/img_search_thumbnail"
         android:src="@drawable/no_image"/>
 
     <TextView
         android:layout_width="246dp"
-        android:layout_height="113dp"
+        android:layout_height="100dp"
         android:text="New Text"
         android:textSize="@dimen/abc_dialog_padding_top_material"
         android:gravity="center|left"

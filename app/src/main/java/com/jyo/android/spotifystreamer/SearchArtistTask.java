@@ -24,11 +24,12 @@ public class SearchArtistTask extends AsyncTask<String, Void, ArtistsPager> {
 
         //Use of spotify wrapper
         try {
+
             SpotifyApi api = new SpotifyApi();
             SpotifyService spotifyService = api.getService();
-            ArtistsPager results = spotifyService.searchArtists(params[0]);
 
-            return results;
+            return spotifyService.searchArtists(params[0]);
+
         }catch (Exception e){
             Log.e(LOG_TAG, e.getMessage(), e);
             return null;
@@ -38,9 +39,6 @@ public class SearchArtistTask extends AsyncTask<String, Void, ArtistsPager> {
     @Override
     protected void onPostExecute(ArtistsPager result) {
         //Obtaining artists
-//        for (Artist artist: result.artists.items) {
-//            searchAdapter.addArtist(artist);
-//        }
         searchAdapter.clear();
         searchAdapter.addAll(result.artists.items);
     }

@@ -11,11 +11,20 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".SearchActivity"
-            android:label="@string/search_title" >
+            android:label="@string/search_title"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".TopTenActivity"
+            android:label="@string/title_activity_top_ten"
+            android:parentActivityName=".SearchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jyo.android.spotifystreamer.SearchActivity" />
         </activity>
     </application>
 

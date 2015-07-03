@@ -1,7 +1,6 @@
 package com.jyo.android.spotifystreamer;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,19 +23,11 @@ public class SearchAdapter extends ArrayAdapter<Artist> {
 
     private List<Artist> artistResults;
     private Context context;
-    private Bitmap image;
-
-    private static LayoutInflater inflater = null;
 
     public SearchAdapter(Context context, List<Artist> artistsResults){
         super(context, R.layout.list_item_serach, artistsResults);
         this.context = context;
         this.artistResults = artistsResults;
-    }
-
-    public void addArtist(Artist artist){
-        this.artistResults.add(artist);
-        notifyDataSetChanged();
     }
 
     @Override
